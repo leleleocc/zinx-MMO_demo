@@ -1,0 +1,41 @@
+syntax = "proto3";
+package pb;
+option go_package = './;pb';
+option csharp_namespace = 'Pb'; //c#模块命名空间
+
+//同步玩家ID msgid=1
+message SyncPid{
+  int32 Pid = 1;//服务器生成新玩家
+}
+//广播 msgid=200
+message Broadcast{
+  int32 Pid = 1;
+  int32 Tp = 2;//1-世界聊天；2-玩家位置 3-动作 4-移动后的位置更新
+  oneof Data  {
+    string Content = 3; //聊天内容
+    Position Pos = 4;  //位置
+    int32 ActionData = 5; //动作
+  }
+}
+//位置信息
+message Position{
+  float X = 1;
+  float Y = 2;
+  float Z = 3;
+  float V = 4;
+}
+
+
+//世界聊天
+message Talk{
+  string Content = 1;
+}
+
+//同步周围玩家位置信息
+message SyncPlayers{
+  repeated Players ps = 1;
+}
+message Players{
+  int32 Pid = 1;
+  Position Pos = 2;
+}
